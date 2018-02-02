@@ -33,7 +33,7 @@ fi
 
 CONFIG_FILE="/hydro-serving/envoy.json"
 
-cat <<EOF >> $CONFIG_FILE
+cat <<EOF > $CONFIG_FILE
 {
   "admin": {
     "access_log_path": "/dev/stdout",
