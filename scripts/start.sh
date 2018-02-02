@@ -15,7 +15,7 @@
 [ -z "$MODEL_VERSION" ] && MODEL_VERSION="_"
 [ -z "$RUNTIME" ] && RUNTIME="_"
 [ -z "$RUNTIME_VERSION" ] && RUNTIME_VERSION="_"
-[ -z "$SERVICE_ID" ] && SERVICE_ID="_"
+[ -z "$SERVICE_ID" ] && SERVICE_ID="0"
 [ -z "$SERVICE_NAME" ] && SERVICE_NAME="_"
 [ -z "$SERVICE_PROVIDER_ID" ] && SERVICE_PROVIDER_ID="_"
 
@@ -136,4 +136,4 @@ EOF
 echo "Configuration file generated"
 cat $CONFIG_FILE
 
-exec envoy -c $CONFIG_FILE --v2-config-only --max-obj-name-len 160 -l debug
+exec envoy -c $CONFIG_FILE --v2-config-only --max-obj-name-len 160
