@@ -1,5 +1,7 @@
 #!/bin/sh
 
+[ -z "$SIDECAR_LOG_LEVEL" ] && SIDECAR_LOG_LEVEL="info"
+
 [ -z "$MANAGER_HOST" ] && MANAGER_HOST="manager"
 [ -z "$MANAGER_PORT" ] && MANAGER_PORT="8080"
 
@@ -136,4 +138,4 @@ EOF
 echo "Configuration file generated"
 cat $CONFIG_FILE
 
-exec envoy -c $CONFIG_FILE --v2-config-only --max-obj-name-len 160
+exec envoy -c $CONFIG_FILE --v2-config-only --max-obj-name-len 160 -l $SIDECAR_LOG_LEVEL
