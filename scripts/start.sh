@@ -22,15 +22,23 @@
 [ -z "$SERVICE_PROVIDER_ID" ] && SERVICE_PROVIDER_ID="_"
 
 [ -z "$CLUSTER_NAME" ] && CLUSTER_NAME="_"
-[ -z "$LOCALITY_ZONE" ] && LOCALITY_ZONE="_"
-[ -z "$LOCALITY_SUB_ZONE" ] && LOCALITY_SUB_ZONE="_"
-[ -z "$LOCALITY_REGION" ] && LOCALITY_REGION="_"
 
 [ -z "$CONTAINER_ID" ] && CONTAINER_ID=$(cat /proc/self/cgroup | grep docker | grep -o -E '[0-9a-f]{64}' | head -n 1)
 
 if [ "$CURRENT_ENVIRONMENT" == "ecs" ]; then
-  echo "ECS !!!"
+  HOST_INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
+  HOST_PRIVATE_IP=$(curl http://169.254.169.254/latest/meta-data/local-ipv4)
+  LOCALITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
+  LOCALITY_REGION=$(echo $LOCALITY_ZONE | sed 's/[a-z]$//')
+  LOCALITY_SUB_ZONE=$(echo $LOCALITY_ZONE | sed "s/$LOCALITY_REGION//")
+
 fi
+
+[ -z "$LOCALITY_SUB_ZONE" ] && LOCALITY_SUB_ZONE="_"
+[ -z "$LOCALITY_ZONE" ] && LOCALITY_ZONE="_"
+[ -z "$HOST_INSTANCE_ID" ] && HOST_INSTANCE_ID="_"
+[ -z "$HOST_PRIVATE_IP" ] && HOST_PRIVATE_IP="_"
+[ -z "$LOCALITY_REGION" ] && LOCALITY_REGION="_"
 
 
 CONFIG_FILE="/hydro-serving/envoy.json"
@@ -76,7 +84,9 @@ cat <<EOF > $CONFIG_FILE
         "runtimeVersion":"$RUNTIME_VERSION",
         "environment":"$ENVIRONMENT_NAME",
         "serviceId":"$SERVICE_ID",
-        "serviceProviderId":"$SERVICE_PROVIDER_ID"
+        "serviceProviderId":"$SERVICE_PROVIDER_ID",
+        "hostInstanceId":"$HOST_INSTANCE_ID",
+        "hostPrivateIp":"$HOST_PRIVATE_IP"
     },
     "locality":{
         "region":"$LOCALITY_REGION",
