@@ -62,7 +62,7 @@ cat <<EOF > $CONFIG_FILE
     },
     "ads_config": {
         "api_type": "GRPC",
-        "cluster_name": [
+        "cluster_names": [
             "manager_xds_cluster"
         ]
     }
