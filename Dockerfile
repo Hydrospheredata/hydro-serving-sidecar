@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy-alpine:v1.5.0
+FROM envoyproxy/envoy-alpine:v1.6.0
 
 LABEL DEPLOYMENT_TYPE=SIDECAR
 ADD scripts/ /hydro-serving

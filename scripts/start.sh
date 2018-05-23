@@ -31,7 +31,6 @@ if [ "$CURRENT_ENVIRONMENT" == "ecs" ]; then
   LOCALITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
   LOCALITY_REGION=$(echo $LOCALITY_ZONE | sed 's/[a-z]$//')
   LOCALITY_SUB_ZONE=$(echo $LOCALITY_ZONE | sed "s/$LOCALITY_REGION//")
-
 fi
 
 [ -z "$LOCALITY_SUB_ZONE" ] && LOCALITY_SUB_ZONE="_"
