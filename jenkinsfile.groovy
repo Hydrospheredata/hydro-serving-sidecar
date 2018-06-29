@@ -74,7 +74,7 @@ def calculateNextDevVersion(releaseVersion) {
 node("JenkinsOnDemand") {
     def repository = 'hydro-serving-sidecar'
     def organization = 'Hydrospheredata'
-    def gitCredentialId = 'HydrospheredataGithubAccessKey'
+    def gitCredentialId = 'HydroRobot_AccessToken'
 
     stage('Checkout') {
         deleteDir()
