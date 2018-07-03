@@ -21,14 +21,14 @@ def isReleaseJob() {
 
 def generateTagComment(releaseVersion) {
     commitsList = sh(
-        returnStdout: true,
-        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"* @%an %B \""
+            returnStdout: true,
+            script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"@%an %B\""
     ).trim()
     return "${commitsList}"
 }
 
 def createReleaseInGithub(gitCredentialId, organization, repository, releaseVersion, message) {
-    bodyMessage = message.replaceAll("\r", "").replaceAll("\n", "<br/>")
+    bodyMessage = message.replaceAll("\r", "").replaceAll("\n", "<br/>").replaceAll("<br/><br/>", "<br/>")
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
         def request = """
             {
@@ -108,15 +108,15 @@ node("JenkinsOnDemand") {
             sh "docker push hydrosphere/serving-sidecar:${imageVersion}"
         }
 
-        stage("Create tag"){
+        stage("Create tag") {
             def curVersion = currentVersion()
-            tagComment=generateTagComment(curVersion)
+            tagComment = generateTagComment(curVersion)
             sh "git commit -a -m 'Releasing ${curVersion}'"
             sh "git tag -a ${curVersion} -m '${tagComment}'"
 
             sh "git checkout ${env.BRANCH_NAME}"
 
-            def nextVersion=calculateNextDevVersion(curVersion)
+            def nextVersion = calculateNextDevVersion(curVersion)
             changeVersion(nextVersion)
 
             sh "git commit -a -m 'Development version increased: ${nextVersion}'"
@@ -128,7 +128,7 @@ node("JenkinsOnDemand") {
     } else {
         stage('Push docker') {
             if (env.BRANCH_NAME == "master") {
-              sh "docker push hydrosphere/serving-sidecar:latest"
+                sh "docker push hydrosphere/serving-sidecar:latest"
             }
         }
     }
