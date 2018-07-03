@@ -22,7 +22,7 @@ def isReleaseJob() {
 def generateTagComment(releaseVersion) {
     commitsList = sh(
         returnStdout: true,
-        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"* %B (%a)\""
+        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\" * %B \""
     ).trim()
     return "${commitsList}"
 }
