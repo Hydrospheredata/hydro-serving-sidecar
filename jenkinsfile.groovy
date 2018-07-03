@@ -22,13 +22,13 @@ def isReleaseJob() {
 def generateTagComment(releaseVersion) {
     commitsList = sh(
         returnStdout: true,
-        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\" * %B \""
+        script: "git log `git tag --sort=-taggerdate | head -1`..HEAD --pretty=\"* @%an %B \""
     ).trim()
     return "${commitsList}"
 }
 
 def createReleaseInGithub(gitCredentialId, organization, repository, releaseVersion, message) {
-    bodyMessage = message.replaceAll("\n", "<br />").replace("\r", "")
+    bodyMessage = message.replaceAll("\r", "")
     withCredentials([[$class: 'UsernamePasswordMultiBinding', credentialsId: gitCredentialId, usernameVariable: 'GIT_USERNAME', passwordVariable: 'GIT_PASSWORD']]) {
         def request = """
             {
