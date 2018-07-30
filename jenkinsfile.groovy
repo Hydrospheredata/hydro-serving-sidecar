@@ -11,5 +11,6 @@ pipelineCommon(
         ["hydrosphere/serving-sidecar"],
         {},//collectTestResults, do nothing
         buildFunction,
+        buildFunction,
         buildFunction
 )
