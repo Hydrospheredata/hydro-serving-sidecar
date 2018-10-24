@@ -12,5 +12,10 @@ pipelineCommon(
         {},//collectTestResults, do nothing
         buildFunction,
         buildFunction,
-        buildFunction
+        buildFunction,
+        null,
+        "",
+        "",
+        {},
+        commitToCD("sidecar", "dev")
 )
