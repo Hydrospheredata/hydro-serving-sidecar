@@ -17,5 +17,5 @@ pipelineCommon(
         "",
         "",
         {},
-        commitToCD("sidecar", "dev")
+        commitToCD("sidecar")
 )
